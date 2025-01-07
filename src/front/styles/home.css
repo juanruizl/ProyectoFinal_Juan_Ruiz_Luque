@@ -1,185 +1,196 @@
-/*
-    home.css: This website contains selectors only used in home.css
-
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #f8f9fa; 
-    color: #333; 
-    line-height: 1.6;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.3s ease;
-  }
-  
-  a:hover {
-    color: #0056b3;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .hero-section {
-    position: relative;
-    color: #fff;
-    text-align: center;
-    height: 80vh;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  
-  .hero-section .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-  }
-  
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+  background-color: #f4f4f4; 
+}
+
+.hero-section {
+  position: relative;
+  height: 100vh;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(0, 184, 148, 0.8)),
+    url("https://www.palplastic.es/wp-content/uploads/2017/06/gallery-danpatherm2-1024x669.jpg") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin: 0 auto 30px;
+  max-width: 700px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.section h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.section h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #00b894;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.section ul li {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.section ul li i {
+  color: #00b894;
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.section img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.features {
+  background: linear-gradient(135deg, #007bff, #00b894);
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.features .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.features .card {
+  flex: 1 1 calc(33.333% - 20px); 
+  max-width: 300px;
+  background: #fff;
+  color: #333;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.features .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.features .card i {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #00b894, #007bff);
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.cta-section .btn {
+  font-size: 1rem;
+  padding: 12px 30px;
+  border-radius: 30px;
+  background: #fff;
+  color: #007bff;
+  transition: all 0.3s ease;
+}
+
+.cta-section .btn:hover {
+  background: #f4f4f4;
+  color: #0056b3;
+}
+
+@media (max-width: 768px) {
   .hero-section h1 {
-    font-size: 3rem;
-    z-index: 1;
-  }
-  
-  .hero-section p {
-    font-size: 1.2rem;
-    z-index: 1;
-  }
-  
-  .hero-section .btn {
-    margin: 10px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .hero-section .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-  }
-  
-  .hero-section .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .card h4 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .card p {
-    color: #666;
+    font-size: 2.5rem;
   }
 
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .table th, .table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #f4f4f9;
-  }
-  
-  .table tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  form label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  form input, form select, form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  .hero-section p {
     font-size: 1rem;
   }
-  
-  form button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+
+  .features .card {
+    flex: 1 1 100%; 
+    max-width: none;
   }
-  
-  form button:hover {
-    background-color: #0056b3;
+
+  .cta-section h2 {
+    font-size: 1.8rem;
   }
-  
-  @media (max-width: 768px) {
-    .hero-section h1 {
-      font-size: 2rem;
-    }
-  
-    .hero-section p {
-      font-size: 1rem;
-    }
-  
-    .card {
-      padding: 15px;
-    }
-  
-    .table {
-      font-size: 0.9rem;
-    }
-  
-    form input, form select, form textarea {
-      font-size: 0.9rem;
-    }
+
+  .cta-section .btn {
+    font-size: 0.9rem;
   }
-  
+}
+
+@media (max-width: 576px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section p {
+    font-size: 0.9rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+}
