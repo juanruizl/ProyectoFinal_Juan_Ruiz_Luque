@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client"; 
 import App from "./App.jsx";
 import injectContext from "./store/appContext.js"; 
+import "../styles/home.css"
 import "bootstrap/dist/css/bootstrap.min.css"; // Incluyo los estilos de Bootstrap
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Incluyo el JavaScript de Bootstrap
 
