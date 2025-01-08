@@ -1,0 +1,42 @@
+.converter-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; 
+    font-size: 0.8rem; 
+    color: #6c757d; 
+  }
+  
+  .convert-btn {
+    background: none;
+    border: none;
+    padding: 3px;
+    font-size: 0.8rem;
+    color: #adb5bd; 
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .convert-btn:hover {
+    color: #6c757d; 
+  }
+  
+  .convert-btn:focus {
+    outline: none;
+  }
+  
+  .converted-amount {
+    color: #495057; 
+    font-size: 0.8rem; 
+    font-weight: normal;
+  }
+  
+  @media (max-width: 576px) {
+    .converter-container {
+      font-size: 0.7rem; 
+    }
+  
+    .convert-btn {
+      font-size: 0.7rem;
+    }
+  }
+  

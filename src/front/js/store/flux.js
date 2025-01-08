@@ -400,7 +400,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
-
+			convertCurrency: async (base, target, amount) => {
+				const store = getStore();
+				const token = store.token;
+			
+				// Verifica que el token esté disponible.
+				if (!token) {
+					console.error("Token no disponible. Asegúrate de estar autenticado.");
+					return null;
+				}
+			
+				try {
+					// Construye la URL con los parámetros necesarios.
+					const url = `${process.env.BACKEND_URL}/api/convert?base=${base}&target=${target}&amount=${amount}`;
+			
+					// Realiza la solicitud al backend con el token.
+					const response = await fetch(url, {
+						method: "GET",
+						headers: {
+							Authorization: `Bearer ${token}`, // Incluye el token en los headers.
+							"Content-Type": "application/json",
+						},
+					});
+			
+					if (response.ok) {
+						// Procesa y devuelve los datos de la conversión.
+						const data = await response.json();
+						console.log("Conversión realizada:", data);
+						return data; // Devuelve los datos de conversión.
+					} else {
+						// Manejo de errores en la solicitud.
+						const errorData = await response.json();
+						console.error("Error al convertir moneda:", errorData.message || response.statusText);
+						return null;
+					}
+				} catch (error) {
+					console.error("Error en convertCurrency:", error.message);
+					return null;
+				}
+			},			
 		},
 	};
 };

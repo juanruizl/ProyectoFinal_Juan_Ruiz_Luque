@@ -1,253 +1,122 @@
-body {
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
     box-sizing: border-box;
-    color: #333;
-    background-color: #f4f4f4; 
-}
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #343a40;
+    overflow-x: hidden;
+  }
+  
+  :root {
+    --primary-color: #2c3e50; 
+    --secondary-color: #f39c12; 
+    --light-color: #f8f9fa; 
+    --dark-color: #212529; 
+    --text-color: #343a40; 
+    --text-muted: #6c757d; 
+  }
 
-h1, h2, h3, h4, h5, h6 {
-    margin: 0;
-    padding: 0;
-    color: #1e1e2f; 
-    text-align: center; 
-    line-height: 1.4;
-}
-
-h1 {
-    font-size: 3rem;
-    font-weight: bold;
-}
-
-h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1rem;
-    color: #555;
-    margin: 0 0 1rem 0;
-    text-align: center; 
-}
-
-a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: #0056b3;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 30px;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.btn-success {
-    background-color: #00b894;
-    color: #fff;
-    border: none;
-}
-
-.btn-success:hover {
-    background-color: #019d73;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn-outline-light {
-    background-color: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-}
-
-.btn-outline-light:hover {
-    background-color: #fff;
-    color: #333;
-    transform: translateY(-2px);
-}
-
-.container {
+  .container {
+    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-}
-
-.hero-section {
-    position: relative;
-    height: 100vh;
-    background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(0, 184, 148, 0.8)),
-        url("https://www.palplastic.es/wp-content/uploads/2017/06/gallery-danpatherm2-1024x669.jpg") no-repeat center center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  }
+  
+  .text-center {
     text-align: center;
-    color: #fff;
-    padding: 0 20px;
-}
-
-.hero-section .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 0;
-}
-
-.hero-section .hero-content {
-    z-index: 1;
-}
-
-.hero-section h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-.hero-section p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-.section {
-    padding: 60px 20px;
-    background-color: #fff;
-    text-align: center;
-}
-
-.section h2::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 4px;
-    background-color: #00b894;
-    margin: 10px auto 20px;
-    border-radius: 2px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-ul li {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-ul li i {
-    margin-right: 10px;
-    color: #00b894;
-    font-size: 1.2rem;
-}
-
-.card {
-    background-color: #fff;
+  }
+  
+  .text-muted {
+    color: var(--text-muted);
+  }
+  
+  .card {
+    border: 1px solid var(--text-muted);
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    background-color: #fff;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.card i {
-    font-size: 2rem;
-    color: #007bff;
-    margin-bottom: 10px;
-}
-
-.cta-section {
-    padding: 60px 20px;
-    background: linear-gradient(135deg, #00b894, #007bff);
-    color: #fff;
-    text-align: center;
-}
-
-.cta-section h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.cta-section .btn {
-    background-color: #fff;
-    color: #007bff;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
     font-weight: bold;
-}
-
-.cta-section .btn:hover {
-    background-color: #f4f4f4;
-    color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+  
+  .section {
+    padding: 60px 20px;
+    background-color: var(--light-color);
+  }
+  
+  .section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .section h2::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 10px auto;
+    border-radius: 2px;
+  }
+  
+  .section p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .container {
+      width: 95%;
     }
-
-    h2 {
-        font-size: 1.8rem;
-    }
-
-    .hero-section h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero-section p {
-        font-size: 1rem;
-    }
-
-    .card i {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .hero-section h1 {
-        font-size: 2rem;
-    }
-
-    .hero-section p {
-        font-size: 0.9rem;
-    }
-
+  
     .card {
-        padding: 15px;
+      padding: 15px;
     }
-}
+  
+    .section h2 {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .section h2 {
+      font-size: 1.8rem;
+    }
+  
+    .card {
+      padding: 10px;
+    }
+  }
+  
+  

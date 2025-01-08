@@ -1,7 +1,6 @@
 """
 Este módulo se encarga de iniciar el servidor API, cargar la base de datos y registrar los endpoints.
 """
-
 import os
 import logging
 from flask import Flask, jsonify, send_from_directory

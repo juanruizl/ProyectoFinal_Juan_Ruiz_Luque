@@ -1,142 +1,188 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  box-sizing: border-box;
-  background-color: #f4f4f4; 
-}
-
 .hero-section {
   position: relative;
   height: 100vh;
-  text-align: center;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(0, 184, 148, 0.8)),
+  background: linear-gradient(135deg, rgba(33, 37, 41, 0.85), rgba(52, 58, 64, 0.85)),
     url("https://www.palplastic.es/wp-content/uploads/2017/06/gallery-danpatherm2-1024x669.jpg") no-repeat center center;
   background-size: cover;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  justify-content: center; 
+  align-items: center; 
+  color: #fff;
+  text-align: center;
   padding: 20px;
 }
 
-.hero-section h1 {
-  font-size: 3.5rem;
-  font-weight: bold;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  max-width: 800px; 
+  text-align: center; 
 }
 
-.hero-section p {
-  font-size: 1.2rem;
-  margin: 0 auto 30px;
-  max-width: 700px;
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  max-width: 700px; 
+  text-align: center; 
+}
+
 
 .hero-buttons {
   display: flex;
-  gap: 15px;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-buttons .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.hero-buttons .btn-primary {
+  background-color: #00cc66;
+  color: #fff;
+  border: 2px solid #00cc66;
+}
+
+.hero-buttons .btn-primary:hover {
+  background-color: transparent;
+  color: #00cc66;
+  box-shadow: 0 4px 10px rgba(0, 204, 102, 0.4);
+}
+
+.hero-buttons .btn-outline-light {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.hero-buttons .btn-outline-light:hover {
+  background-color: #fff;
+  color: #00cc66;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
 }
 
 .section {
   padding: 60px 20px;
+  background-color: #f8f9fa;
   text-align: center;
-  background-color: #fff;
 }
 
 .section h2 {
   font-size: 2.5rem;
   font-weight: bold;
+  color: #2c3e50;
   margin-bottom: 20px;
-  color: #333;
 }
 
-.section h2::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 4px;
-  background: #00b894;
-  margin: 10px auto 0;
-  border-radius: 2px;
+.section p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  color: #6c757d;
 }
 
 .section ul {
   list-style: none;
   padding: 0;
-  text-align: left;
+  margin: 0;
 }
 
 .section ul li {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.section ul li:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  background-color: #e8f5ee;
 }
 
 .section ul li i {
-  color: #00b894;
-  margin-right: 10px;
   font-size: 1.5rem;
+  color: #00cc66;
+  margin-right: 15px;
 }
 
-.section img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-top: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+.section ul li span {
+  color: #6c757d;
 }
 
 .features {
-  background: linear-gradient(135deg, #007bff, #00b894);
-  color: #fff;
+  background-color: #fff;
   padding: 60px 20px;
-  text-align: center;
 }
 
-.features h2 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-}
-
-.features .row {
-  display: flex;
-  flex-wrap: wrap;
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  justify-content: center;
 }
 
-.features .card {
-  flex: 1 1 calc(33.333% - 20px); 
-  max-width: 300px;
-  background: #fff;
-  color: #333;
-  border-radius: 10px;
+.card {
+  background-color: #f8f9fa;
   padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.features .card:hover {
+.card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.features .card i {
-  font-size: 2.5rem;
+.card i {
+  font-size: 2rem;
+  color: #00cc66;
   margin-bottom: 15px;
-  color: #007bff;
+}
+
+.card h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.card p {
+  color: #6c757d;
 }
 
 .cta-section {
-  background: linear-gradient(135deg, #00b894, #007bff);
+  background-color: #2c3e50;
   color: #fff;
+  padding: 50px 20px;
   text-align: center;
-  padding: 60px 20px;
 }
 
 .cta-section h2 {
@@ -144,53 +190,57 @@ body {
   margin-bottom: 20px;
 }
 
+.cta-section p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: #dfe4ea;
+}
+
 .cta-section .btn {
-  font-size: 1rem;
+  background-color: #00cc66;
+  color: #fff;
   padding: 12px 30px;
   border-radius: 30px;
-  background: #fff;
-  color: #007bff;
+  font-size: 1rem;
+  text-transform: uppercase;
   transition: all 0.3s ease;
 }
 
 .cta-section .btn:hover {
-  background: #f4f4f4;
-  color: #0056b3;
+  background-color: #008f4c;
+  box-shadow: 0 4px 10px rgba(0, 204, 102, 0.4);
 }
 
 @media (max-width: 768px) {
-  .hero-section h1 {
+  .hero-content h1 {
     font-size: 2.5rem;
   }
 
-  .hero-section p {
-    font-size: 1rem;
-  }
-
-  .features .card {
-    flex: 1 1 100%; 
-    max-width: none;
-  }
-
-  .cta-section h2 {
-    font-size: 1.8rem;
-  }
-
-  .cta-section .btn {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .hero-section h1 {
-    font-size: 2rem;
-  }
-
-  .hero-section p {
-    font-size: 0.9rem;
+  .hero-content p {
+    font-size: 1.1rem;
   }
 
   .hero-buttons {
     flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero-buttons .btn {
+    width: 100%; 
+    text-align: center;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr; 
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
   }
 }

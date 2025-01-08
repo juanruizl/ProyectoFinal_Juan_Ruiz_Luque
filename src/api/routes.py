@@ -8,6 +8,8 @@ import requests
 # Defino el Blueprint para agrupar las rutas de mi API
 api = Blueprint('api', __name__)
 
+EXCHANGE_RATE_API_KEY = "e4b91de1583572c0905b03cc"
+
 # Ruta para iniciar sesión, valido las credenciales del usuario y genero un token de acceso
 @api.route('/login', methods=['POST'])
 def login():
@@ -116,6 +118,14 @@ def create_transaction():
     # Valido que los campos obligatorios estén presentes
     if not all([data.get(field) for field in ["amount", "transaction_type", "status"]]):
         raise APIException("Faltan campos obligatorios (amount, transaction_type, status)", status_code=400)
+    
+    #Verifico que la fecha proporcionada es válida
+    transaction_date = datetime.utcnow()  # Valor predeterminado
+    if "date" in data:
+        try:
+            transaction_date = datetime.fromisoformat(data["date"])
+        except ValueError:
+            raise APIException("Formato de fecha inválido. Debe ser 'YYYY-MM-DD' o ISO 8601", status_code=400)
 
     # Creo una nueva instancia de la transacción con los datos recibidos
     transaction = Transaction(
@@ -125,7 +135,7 @@ def create_transaction():
         transaction_type=data['transaction_type'],
         status=data['status'],
         company=data.get('company'),
-        date=datetime.utcnow()  # Establezco la fecha actual como predeterminada
+        date=transaction_date 
     )
     
     # Guardo la transacción en la base de datos
@@ -311,14 +321,30 @@ def create_project():
     if not all([data.get(field) for field in ["name", "description", "client"]]):
         raise APIException("Faltan campos obligatorios (name, description, client)", status_code=400)
 
+    # Verifico si la fecha de inicio fue proporcionada y es válida
+    start_date = datetime.utcnow()  # Valor predeterminado
+    if "start_date" in data:
+        try:
+            start_date = datetime.fromisoformat(data["start_date"])
+        except ValueError:
+            raise APIException("Formato de fecha inválido para start_date. Debe ser 'YYYY-MM-DD' o ISO 8601", status_code=400)
+
+    # Verifico si la fecha de fin fue proporcionada y es válida
+    end_date = None
+    if "end_date" in data and data["end_date"]:
+        try:
+            end_date = datetime.fromisoformat(data["end_date"])
+        except ValueError:
+            raise APIException("Formato de fecha inválido para end_date. Debe ser 'YYYY-MM-DD' o ISO 8601", status_code=400)
+
     # Creo una nueva instancia del proyecto con los datos proporcionados
     project = Project(
         user_id=user_id,
         name=data['name'],
         description=data['description'],
         client=data['client'],
-        start_date=datetime.utcnow(),  # Establezco la fecha actual como fecha de inicio
-        end_date=data.get('end_date')  # La fecha de fin es opcional
+        start_date=start_date,  # Uso la fecha validada
+        end_date=end_date       # Uso la fecha de fin validada (si existe)
     )
     
     # Guardo el proyecto en la base de datos
@@ -362,12 +388,19 @@ def update_project(project_id):
     project.description = data.get("description", project.description)
     project.client = data.get("client", project.client)
     
+    # Si se proporciona una nueva fecha de inicio, la valido y la actualizo
+    if data.get("start_date"):
+        try:
+            project.start_date = datetime.fromisoformat(data["start_date"])
+        except ValueError:
+            raise APIException("Formato de fecha inválido para start_date. Debe ser 'YYYY-MM-DD' o ISO 8601", status_code=400)
+
     # Si se proporciona una nueva fecha de fin, la valido y la actualizo
     if data.get("end_date"):
         try:
-            project.end_date = datetime.strptime(data["end_date"], "%Y-%m-%d")
+            project.end_date = datetime.fromisoformat(data["end_date"])
         except ValueError:
-            raise APIException("Formato de fecha inválido. Debe ser 'YYYY-MM-DD'", status_code=400)
+            raise APIException("Formato de fecha inválido para end_date. Debe ser 'YYYY-MM-DD' o ISO 8601", status_code=400)
 
     # Guardo los cambios en la base de datos
     db.session.commit()
@@ -541,3 +574,48 @@ def generate_chart():
     except requests.RequestException as e:
         # Manejo errores al interactuar con la API de QuickChart
         raise APIException(f"Error al generar el gráfico: {str(e)}", status_code=500)
+
+@api.route('/convert', methods=['GET'])
+@jwt_required()  # Si necesitas autenticar la solicitud
+def convert_currency():
+    # Obtén los parámetros de la solicitud
+    base = request.args.get('base', 'USD')  # Moneda base (por defecto: USD)
+    target = request.args.get('target', 'EUR')  # Moneda objetivo (por defecto: EUR)
+    amount = request.args.get('amount', 1)  # Cantidad a convertir (por defecto: 1)
+
+    try:
+        # Valida que amount sea un número
+        amount = float(amount)
+    except ValueError:
+        raise APIException("El parámetro 'amount' debe ser un número válido.", status_code=400)
+
+    # URL de la API de ExchangeRate-API
+    url = f"https://v6.exchangerate-api.com/v6/{EXCHANGE_RATE_API_KEY}/latest/{base}"
+
+    try:
+        # Realiza la solicitud a ExchangeRate-API
+        response = requests.get(url)
+        response.raise_for_status()  # Verifica errores en la respuesta
+
+        # Procesa los datos de la API
+        data = response.json()
+        rate = data["conversion_rates"].get(target)
+
+        if not rate:
+            raise APIException(f"No se encontró la tasa de cambio para la moneda objetivo: {target}", status_code=404)
+
+        # Calcula el monto convertido
+        converted_amount = round(amount * rate, 2)
+
+        # Devuelve la respuesta en formato JSON
+        return jsonify({
+            "base": base,
+            "target": target,
+            "amount": amount,
+            "converted_amount": converted_amount,
+            "rate": rate
+        }), 200
+
+    except requests.RequestException as e:
+        # Maneja errores en la solicitud a la API externa
+        raise APIException(f"Error al conectarse a la API de ExchangeRate: {str(e)}", status_code=500)

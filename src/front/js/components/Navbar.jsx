@@ -1,92 +1,73 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/navbar.css"; // Importamos los estilos personalizados
+import "../../styles/navbar.css";
 
 const Navbar = () => {
-    const { store, actions } = useContext(Context); // Accedo al contexto global
-    const navigate = useNavigate(); // Para redirigir al usuario después de ciertas acciones
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar el menú móvil
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleLogout = () => {
-        actions.logout(); // Llamo a la acción para cerrar sesión
-        navigate("/login"); // Redirijo al usuario a la página de inicio de sesión
+        actions.logout();
+        navigate("/login");
     };
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen); // Cambio el estado para abrir o cerrar el menú móvil
+        setIsMenuOpen(!isMenuOpen);
     };
 
     return (
         <nav className="navbar">
-            {/* Logo */}
-            <Link className="navbar-brand" to={store.token ? "/dashboard" : "/"}>
-                <span>Gestión</span> Empresarial {/* Nombre de la aplicación */}
-            </Link>
+            <div className="navbar-container">
+                {/* Logo */}
+                <Link className="navbar-brand" to={store.token ? "/dashboard" : "/"}>
+                    <span className="brand-highlight">GESTIÓN EMPRESARIAL </span>
+                </Link>
 
-            {/* Botón de toggle para móviles */}
-            <button className="navbar-toggler" onClick={toggleMenu}>
-                <i className={`fas ${isMenuOpen ? "fa-times" : "fa-bars"}`}></i> {/* Icono dinámico */}
-            </button>
+                {/* Toggle button for mobile */}
+                <button className="navbar-toggler" onClick={toggleMenu} aria-label="Toggle navigation">
+                    <i className={`fas ${isMenuOpen ? "fa-times" : "fa-bars"}`}></i>
+                </button>
 
-            {/* Links del menú */}
-            <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
-                {store.token ? (
-                    <>
-                        {/* Enlaces para usuarios autenticados */}
-                        <li>
-                            <Link className="nav-link" to="/dashboard">
-                                Dashboard
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/transactions">
-                                Transacciones
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/projects">
-                                Proyectos
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/employees">
-                                Empleados
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/budgets">
-                                Presupuestos
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/profile">
-                                Perfil
-                            </Link>
-                        </li>
-                        {/* Botón de cerrar sesión */}
-                        <li>
-                            <button className="btn btn-outline-danger" onClick={handleLogout}>
-                                Cerrar Sesión
-                            </button>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        {/* Enlaces para visitantes */}
-                        <li>
-                            <Link className="nav-link" to="/login">
-                                Iniciar Sesión
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="btn btn-success" to="/signup">
-                                Registrarse
-                            </Link>
-                        </li>
-                    </>
-                )}
-            </ul>
+                {/* Navigation links */}
+                <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
+                    {store.token ? (
+                        <>
+                            <li>
+                                <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/transactions">Transacciones</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/projects">Proyectos</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/employees">Empleados</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/budgets">Presupuestos</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/profile">Perfil</Link>
+                            </li>
+                            <li>
+                                <button className="btn-logout" onClick={handleLogout}>Cerrar Sesión</button>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li>
+                                <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                            </li>
+                            <li>
+                                <Link className="btn-register" to="/signup">Registrarse</Link>
+                            </li>
+                        </>
+                    )}
+                </ul>
+            </div>
         </nav>
     );
 };

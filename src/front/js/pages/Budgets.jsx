@@ -1,81 +1,91 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Modal, Button, Form, Table } from "react-bootstrap";
+import "../../styles/estilosVistas.css";
+import Converter from "../components/Converter.jsx";
 
 const Budgets = () => {
-  const { store, actions } = useContext(Context); // Accedo al estado global y las acciones desde el contexto.
+  const { store, actions } = useContext(Context);
 
-  const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal.
+  const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal.
   const [formData, setFormData] = useState({
-    project_id: "", // Proyecto asociado al presupuesto.
-    description: "", // Descripción del presupuesto.
-    amount: "", // Monto del presupuesto.
-    status: "pending", // Estado inicial del presupuesto.
-  });
+    project_id: "",
+    description: "",
+    amount: "",
+    status: "pending",
+  }); // Estado local para manejar los datos del formulario.
 
   useEffect(() => {
     actions.loadBudgets(); // Cargo la lista de presupuestos al montar el componente.
-    actions.loadProjects(); // Cargo la lista de proyectos disponibles.
+    actions.loadProjects(); // Cargo los proyectos disponibles para asociar presupuestos.
   }, []);
 
-  const handleModalClose = () => setShowModal(false); // Cierro el modal.
-  const handleModalShow = () => setShowModal(true); // Abro el modal.
+  const handleModalClose = () => setShowModal(false); // Cierra el modal.
+  const handleModalShow = () => setShowModal(true); // Abre el modal.
 
   const handleChange = (e) => {
-    // Actualizo los datos del formulario con los valores ingresados.
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value }); // Actualizo los datos del formulario.
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevengo el comportamiento por defecto del formulario.
-    // Llamo a la acción para crear o actualizar un presupuesto según corresponda.
+    e.preventDefault();
+
+    // Determino si se está creando o actualizando un presupuesto.
     const success = formData.id
       ? await actions.updateEntity("budgets", formData.id, "budgets", formData)
       : await actions.createEntity("budgets", "budgets", formData);
+
     if (success) {
-      setShowModal(false); // Cierro el modal tras una operación exitosa.
-      setFormData({ project_id: "", description: "", amount: "", status: "pending" }); // Limpio el formulario.
+      setShowModal(false); // Cierra el modal al completar la operación.
+      setFormData({ project_id: "", description: "", amount: "", status: "pending" }); // Reseteo el formulario.
     }
   };
 
   const handleDelete = async (id) => {
     // Confirmo antes de eliminar un presupuesto.
     if (window.confirm("¿Estás seguro de que deseas eliminar este presupuesto?")) {
-      await actions.deleteEntity("budgets", id, "budgets"); // Llamo a la acción para eliminar el presupuesto.
+      await actions.deleteEntity("budgets", id, "budgets");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-primary mb-4">Presupuestos</h1>
+    <div className="container budgets-container mt-5">
+      <h1>Presupuestos</h1>
 
-      {/* Tabla para listar los presupuestos */}
-      <Table striped bordered hover responsive className="shadow-sm">
-        <thead className="bg-dark text-white">
+      {/* Tabla que lista los presupuestos */}
+      <Table className="table shadow-sm">
+        <thead>
           <tr>
             <th>#</th>
             <th>Proyecto</th>
-            <th>Monto</th>
+            <th>Monto (USD)</th>
             <th>Descripción</th>
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {/* Recorro la lista de presupuestos y los renderizo en la tabla */}
           {store.budgets.map((budget, index) => (
             <tr key={budget.id}>
               <td>{index + 1}</td>
-              {/* Busco el nombre del proyecto asociado al presupuesto */}
               <td>
+                {/* Busco el nombre del proyecto asociado al presupuesto */}
                 {store.projects.find((project) => project.id === budget.project_id)?.name ||
                   "Desconocido"}
               </td>
-              <td>${budget.amount.toLocaleString()}</td>
+              <td>
+                ${budget.amount.toLocaleString()}{" "}
+                {/* Componente para mostrar el monto convertido */}
+                <Converter
+                  value={budget.amount}
+                  baseCurrency="USD"
+                  targetCurrency="EUR"
+                />
+              </td>
               <td>{budget.description || "-"}</td>
               <td>
-                {/* Muestro el estado del presupuesto con un badge de color */}
+                {/* Etiqueta dinámica basada en el estado del presupuesto */}
                 <span
                   className={`badge ${
                     budget.status === "approved"
@@ -93,25 +103,22 @@ const Budgets = () => {
                 </span>
               </td>
               <td>
-                {/* Botón para editar un presupuesto */}
                 <Button
-                  variant="outline-primary"
+                  className="btn btn-outline-primary me-2"
                   size="sm"
                   onClick={() => {
                     setFormData(budget); // Cargo los datos del presupuesto en el formulario.
-                    handleModalShow();
+                    handleModalShow(); // Abro el modal para editar.
                   }}
-                  className="me-2"
                 >
-                  <i className="bi bi-pencil"></i> Editar
+                  <i className="fas fa-edit"></i> Editar
                 </Button>
-                {/* Botón para eliminar un presupuesto */}
                 <Button
-                  variant="outline-danger"
+                  className="btn btn-outline-danger"
                   size="sm"
                   onClick={() => handleDelete(budget.id)}
                 >
-                  <i className="bi bi-trash"></i> Eliminar
+                  <i className="fas fa-trash"></i> Eliminar
                 </Button>
               </td>
             </tr>
@@ -120,8 +127,8 @@ const Budgets = () => {
       </Table>
 
       {/* Botón para añadir un nuevo presupuesto */}
-      <Button variant="primary" onClick={handleModalShow} className="mt-4">
-        Añadir Presupuesto
+      <Button className="btn btn-primary mt-4" onClick={handleModalShow}>
+        <i className="fas fa-plus-circle"></i> Añadir Presupuesto
       </Button>
 
       {/* Modal para crear o editar presupuestos */}
@@ -131,7 +138,6 @@ const Budgets = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            {/* Selección del proyecto asociado */}
             <Form.Group className="mb-3">
               <Form.Label>Proyecto</Form.Label>
               <Form.Select
@@ -141,7 +147,7 @@ const Budgets = () => {
                 required
               >
                 <option value="">Seleccionar Proyecto</option>
-                {/* Lista de proyectos disponibles */}
+                {/* Listado dinámico de proyectos */}
                 {store.projects.map((project) => (
                   <option key={project.id} value={project.id}>
                     {project.name}
@@ -149,7 +155,6 @@ const Budgets = () => {
                 ))}
               </Form.Select>
             </Form.Group>
-            {/* Campo para la descripción del presupuesto */}
             <Form.Group className="mb-3">
               <Form.Label>Descripción</Form.Label>
               <Form.Control
@@ -159,7 +164,6 @@ const Budgets = () => {
                 onChange={handleChange}
               />
             </Form.Group>
-            {/* Campo para el monto del presupuesto */}
             <Form.Group className="mb-3">
               <Form.Label>Monto</Form.Label>
               <Form.Control
@@ -170,7 +174,6 @@ const Budgets = () => {
                 required
               />
             </Form.Group>
-            {/* Selección del estado del presupuesto */}
             <Form.Group className="mb-3">
               <Form.Label>Estado</Form.Label>
               <Form.Select name="status" value={formData.status} onChange={handleChange}>
@@ -179,8 +182,7 @@ const Budgets = () => {
                 <option value="rejected">Rechazado</option>
               </Form.Select>
             </Form.Group>
-            {/* Botón para enviar el formulario */}
-            <Button variant="primary" type="submit" className="w-100">
+            <Button className="btn btn-primary w-100" type="submit">
               {formData.id ? "Actualizar" : "Crear"}
             </Button>
           </Form>

@@ -1,87 +1,90 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Modal, Button, Form, Table, Badge, Spinner } from "react-bootstrap";
+import "../../styles/estilosVistas.css";
+import Converter from "../components/Converter.jsx";
 
 const Transactions = () => {
-    const { store, actions } = useContext(Context); // Accedo al estado global y las acciones desde el contexto.
+    const { store, actions } = useContext(Context);
 
-    const [showModal, setShowModal] = useState(false); // Manejo la visibilidad del modal.
+    const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         amount: "",
         description: "",
         transaction_type: "income",
         status: "pending",
         date: "",
-    }); // Estado local para manejar los datos del formulario.
+    });
 
     useEffect(() => {
-        actions.loadTransactions(); // Cargo las transacciones al montar el componente.
+        actions.loadTransactions(); // Cargo las transacciones al montar el componente
     }, []);
 
-    const handleModalClose = () => setShowModal(false); // Cierro el modal.
-    const handleModalShow = () => setShowModal(true); // Abro el modal.
+    const handleModalClose = () => setShowModal(false); // Cierra el modal
+    const handleModalShow = () => setShowModal(true); // Muestra el modal
 
     const handleChange = (e) => {
-        const { name, value } = e.target; // Actualizo los campos del formulario en base a la entrada del usuario.
-        setFormData({ ...formData, [name]: value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value }); // Actualizo los valores del formulario
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Evito que el formulario recargue la página.
+        e.preventDefault();
 
-        // Validaciones básicas para el formulario.
+        // Validación de monto mayor a 0
         if (formData.amount <= 0) {
             alert("El monto debe ser mayor a 0.");
             return;
         }
 
+        // Validación de fecha para que no sea futura
         if (new Date(formData.date) > new Date()) {
             alert("La fecha no puede ser futura.");
             return;
         }
 
-        // Llamo a las acciones para crear o actualizar una transacción según corresponda.
+        // Determino si es una creación o actualización de transacción
         const isUpdate = !!formData.id;
         const success = isUpdate
             ? await actions.updateEntity("transactions", formData.id, "transactions", formData)
             : await actions.createEntity("transactions", "transactions", formData);
 
         if (success) {
-            setShowModal(false); // Cierro el modal tras un guardado exitoso.
+            setShowModal(false); // Cierra el modal al completar
             setFormData({
                 amount: "",
                 description: "",
                 transaction_type: "income",
                 status: "pending",
                 date: "",
-            }); // Reinicio el formulario.
+            }); // Reseteo el formulario
         } else {
-            alert("Hubo un error al procesar la transacción."); // Muestro un mensaje en caso de error.
+            alert("Hubo un error al procesar la transacción.");
         }
     };
 
     const handleDelete = async (id) => {
+        // Confirmo antes de eliminar la transacción
         if (window.confirm("¿Estás seguro de que deseas eliminar esta transacción?")) {
-            await actions.deleteEntity("transactions", id, "transactions"); // Elimino la transacción seleccionada.
+            await actions.deleteEntity("transactions", id, "transactions");
         }
     };
 
     return (
-        <div className="container mt-5">
-            <h1 className="text-primary mb-4">Transacciones</h1>
+        <div className="container transactions-container mt-5">
+            <h1>Transacciones</h1>
 
-            {/* Muestro un spinner mientras los datos están cargando */}
             {store.loading ? (
                 <div className="text-center">
-                    <Spinner animation="border" />
+                    <Spinner animation="border" /> {/* Indicador de carga */}
                 </div>
             ) : (
-                <Table striped bordered hover responsive className="shadow-sm">
-                    <thead className="bg-dark text-white">
+                <Table className="table shadow-sm">
+                    <thead>
                         <tr>
                             <th>#</th>
                             <th>Fecha</th>
-                            <th>Monto</th>
+                            <th>Monto (USD)</th>
                             <th>Descripción</th>
                             <th>Tipo</th>
                             <th>Estado</th>
@@ -89,7 +92,6 @@ const Transactions = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* Itero sobre las transacciones y las muestro en la tabla */}
                         {Array.isArray(store.transactions) && store.transactions.length > 0 ? (
                             store.transactions.map((transaction, index) => (
                                 <tr key={transaction.id}>
@@ -104,14 +106,20 @@ const Transactions = () => {
                                     >
                                         {transaction.transaction_type === "income" ? "+" : "-"}$
                                         {transaction.amount.toLocaleString()}
+                                        {/* Conversión a otra moneda con el componente Converter */}
+                                        <Converter
+                                            value={transaction.amount}
+                                            baseCurrency="USD"
+                                            targetCurrency="EUR"
+                                        />
                                     </td>
                                     <td>{transaction.description || "-"}</td>
                                     <td>
                                         <Badge
-                                            bg={
+                                            className={
                                                 transaction.transaction_type === "income"
-                                                    ? "success"
-                                                    : "danger"
+                                                    ? "badge-success"
+                                                    : "badge-danger"
                                             }
                                         >
                                             {transaction.transaction_type === "income"
@@ -121,10 +129,10 @@ const Transactions = () => {
                                     </td>
                                     <td>
                                         <Badge
-                                            bg={
+                                            className={
                                                 transaction.status === "completed"
-                                                    ? "primary"
-                                                    : "secondary"
+                                                    ? "badge-primary"
+                                                    : "badge-secondary"
                                             }
                                         >
                                             {transaction.status === "completed"
@@ -133,30 +141,27 @@ const Transactions = () => {
                                         </Badge>
                                     </td>
                                     <td>
-                                        {/* Botón para editar una transacción */}
                                         <Button
-                                            variant="outline-primary"
+                                            className="btn btn-outline-primary me-2"
                                             size="sm"
                                             onClick={() => {
                                                 setFormData({
                                                     ...transaction,
                                                     date: new Date(transaction.date)
                                                         .toISOString()
-                                                        .split("T")[0],
+                                                        .split("T")[0], // Normalizo la fecha
                                                 });
                                                 handleModalShow();
                                             }}
-                                            className="me-2"
                                         >
-                                            <i className="bi bi-pencil"></i> Editar
+                                            <i className="fas fa-edit"></i> Editar
                                         </Button>
-                                        {/* Botón para eliminar una transacción */}
                                         <Button
-                                            variant="outline-danger"
+                                            className="btn btn-outline-danger"
                                             size="sm"
                                             onClick={() => handleDelete(transaction.id)}
                                         >
-                                            <i className="bi bi-trash"></i> Eliminar
+                                            <i className="fas fa-trash"></i> Eliminar
                                         </Button>
                                     </td>
                                 </tr>
@@ -172,11 +177,10 @@ const Transactions = () => {
                 </Table>
             )}
 
-            <Button variant="primary" onClick={handleModalShow} className="mt-4">
-                Añadir Transacción
+            <Button className="btn btn-primary mt-4" onClick={handleModalShow}>
+                <i className="fas fa-plus-circle"></i> Añadir Transacción
             </Button>
 
-            {/* Modal para crear o editar una transacción */}
             <Modal show={showModal} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -185,7 +189,6 @@ const Transactions = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
-                        {/* Campo para el monto */}
                         <Form.Group className="mb-3">
                             <Form.Label>Monto</Form.Label>
                             <Form.Control
@@ -196,7 +199,6 @@ const Transactions = () => {
                                 required
                             />
                         </Form.Group>
-                        {/* Campo para la descripción */}
                         <Form.Group className="mb-3">
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control
@@ -206,7 +208,6 @@ const Transactions = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        {/* Campo para seleccionar el tipo de transacción */}
                         <Form.Group className="mb-3">
                             <Form.Label>Tipo</Form.Label>
                             <Form.Select
@@ -218,7 +219,6 @@ const Transactions = () => {
                                 <option value="expense">Gasto</option>
                             </Form.Select>
                         </Form.Group>
-                        {/* Campo para seleccionar el estado */}
                         <Form.Group className="mb-3">
                             <Form.Label>Estado</Form.Label>
                             <Form.Select name="status" value={formData.status} onChange={handleChange}>
@@ -226,7 +226,6 @@ const Transactions = () => {
                                 <option value="completed">Completado</option>
                             </Form.Select>
                         </Form.Group>
-                        {/* Campo para seleccionar la fecha */}
                         <Form.Group className="mb-3">
                             <Form.Label>Fecha</Form.Label>
                             <Form.Control
@@ -237,7 +236,7 @@ const Transactions = () => {
                                 required
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100">
+                        <Button className="btn btn-primary w-100" type="submit">
                             {formData.id ? "Actualizar" : "Crear"}
                         </Button>
                     </Form>

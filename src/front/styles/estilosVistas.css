@@ -1,0 +1,223 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.transactions-container h1 {
+    color: #0a7a52; 
+}
+
+.projects-container h1 {
+    color: #007bff; 
+}
+
+.budgets-container h1 {
+    color: #1da8e9; 
+}
+
+.employees-container h1 {
+    color: #ffc107; 
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #0a7a52; 
+    color: #fff;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.table tr:hover {
+    background-color: #e9ecef;
+}
+
+.badge-success {
+    background-color: #0a7a52 !important;
+    color: #fff !important;
+}
+
+.badge-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.badge-secondary {
+    background-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.badge-primary {
+    background-color: #007bff !important;
+    color: #fff !important;
+}
+
+button {
+    border: none;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+button.btn-primary {
+    background-color: #0a7a52;
+    color: #fff;
+}
+
+button.btn-primary:hover {
+    background-color: #085a3d;
+}
+
+button.btn-outline-primary {
+    background-color: transparent;
+    color: #0a7a52;
+    border: 1px solid #0a7a52;
+}
+
+button.btn-outline-primary:hover {
+    background-color: #0a7a52;
+    color: #fff;
+}
+
+button.btn-outline-danger {
+    background-color: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+button.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background-color: #0a7a52;
+    color: #fff;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+form label {
+    font-weight: bold;
+    color: #212529;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #0a7a52;
+    box-shadow: 0 0 4px rgba(10, 122, 82, 0.5);
+}
+
+form button {
+    background-color: #0a7a52;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: #085a3d;
+}
+
+.spinner-border {
+    color: #0a7a52;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.8rem;
+    }
+
+    form label {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        font-size: 0.85rem;
+    }
+}
